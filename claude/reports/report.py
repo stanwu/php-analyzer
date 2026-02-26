@@ -66,13 +66,15 @@ def write_markdown(results: dict, output: Path) -> None:
         lines.append(f"- **Total PHP files found:** {stats.get('total_files', 0)}")
         lines.append("")
 
+    root_path = Path(root) if root != "unknown" else None
+
     # Credential findings
     cred_findings: list[Finding] = results.get("credential_findings", [])
     if cred_findings is not None:
         lines.append("## Credential & Secret Findings")
         lines.append("")
         if cred_findings:
-            _append_findings_table(lines, cred_findings)
+            _append_findings_table(lines, cred_findings, root_path)
         else:
             lines.append("_No credential findings._")
         lines.append("")
@@ -83,7 +85,7 @@ def write_markdown(results: dict, output: Path) -> None:
         lines.append("## Security Vulnerability Findings")
         lines.append("")
         if sec_findings:
-            _append_findings_table(lines, sec_findings)
+            _append_findings_table(lines, sec_findings, root_path)
         else:
             lines.append("_No security findings._")
         lines.append("")
@@ -106,7 +108,11 @@ def write_markdown(results: dict, output: Path) -> None:
             lines.append("| File | In-degree |")
             lines.append("|------|-----------|")
             for node, degree in hubs[:10]:
-                lines.append(f"| `{node}` | {degree} |")
+                try:
+                    node_display = Path(node).relative_to(root_path) if root_path else node
+                except ValueError:
+                    node_display = node
+                lines.append(f"| `{node_display}` | {degree} |")
 
         cycles = dep_results.get("cycles", [])
         if cycles:
@@ -123,7 +129,11 @@ def write_markdown(results: dict, output: Path) -> None:
             lines.append(f"### Orphaned Files ({len(orphans)} files with no incoming includes)")
             lines.append("")
             for orphan in orphans[:20]:
-                lines.append(f"- `{orphan}`")
+                try:
+                    orphan_display = Path(orphan).relative_to(root_path) if root_path else orphan
+                except ValueError:
+                    orphan_display = orphan
+                lines.append(f"- `{orphan_display}`")
             if len(orphans) > 20:
                 lines.append(f"- _...and {len(orphans) - 20} more_")
         lines.append("")
@@ -137,7 +147,11 @@ def write_markdown(results: dict, output: Path) -> None:
             lines.append("| File | Reason |")
             lines.append("|------|--------|")
             for f in dead_findings:
-                lines.append(f"| `{f.file}` | {f.match} |")
+                try:
+                    dead_display = f.file.relative_to(root_path) if root_path else f.file.name
+                except ValueError:
+                    dead_display = f.file.name
+                lines.append(f"| `{dead_display}` | {f.match} |")
         else:
             lines.append("_No dead/backup files found._")
         lines.append("")
@@ -145,7 +159,9 @@ def write_markdown(results: dict, output: Path) -> None:
     output.write_text("\n".join(lines), encoding="utf-8")
 
 
-def _append_findings_table(lines: list[str], findings: list[Finding]) -> None:
+def _append_findings_table(
+    lines: list[str], findings: list[Finding], root: Path | None = None
+) -> None:
     """Append a formatted findings table to lines."""
     # Sort by severity then file
     sorted_findings = sorted(
@@ -157,9 +173,18 @@ def _append_findings_table(lines: list[str], findings: list[Finding]) -> None:
     lines.append("|----------|------|------|------|-------|")
     for f in sorted_findings:
         badge = _SEVERITY_BADGE.get(f.severity, f.severity)
-        match_escaped = f.match.replace("|", "\\|")[:120]
+        # Show path relative to root when possible, fall back to filename only
+        try:
+            display_path = f.file.relative_to(root) if root else f.file.name
+        except ValueError:
+            display_path = f.file.name
+        # Sanitize match: strip newlines, escape pipes, truncate
+        match_clean = " ".join(f.match.splitlines()).strip()
+        match_escaped = match_clean.replace("|", "\\|")[:80]
+        if len(match_clean) > 80:
+            match_escaped += "…"
         lines.append(
-            f"| {badge} | `{f.file}` | {f.line} | `{f.rule}` | `{match_escaped}` |"
+            f"| {badge} | `{display_path}` | {f.line} | `{f.rule}` | `{match_escaped}` |"
         )
 
 
