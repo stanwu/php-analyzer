@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from .base import BaseScanner, Finding, line_starts, pos_to_line, shorten
+from .base import BaseScanner, Finding, Severity, line_starts, pos_to_line, shorten
 
 
 _TAINT_ASSIGN = re.compile(
@@ -45,7 +45,8 @@ class SecurityScanner(BaseScanner):
             "dynamic_include",
             "HIGH",
             re.compile(
-                r"\b(include|include_once|require|require_once)\s*(?:\(\s*)?\$[A-Za-z_][A-Za-z0-9_]*",
+                r"\b(include|include_once|require|require_once)"
+                r"\s*(?:\(\s*)?\$[A-Za-z_][A-Za-z0-9_]*",
                 re.IGNORECASE,
             ),
         ),

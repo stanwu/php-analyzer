@@ -24,7 +24,8 @@ class DeadFileScanner(BaseScanner):
         reasons: list[str] = []
         if low.startswith(("x---", "_", "-")):
             reasons.append("suspicious_prefix")
-        if any(k in low for k in ["backup", ".bcakup", ".bak", " bak", "old", "tmp", "copy", "test", "debug"]):
+        if any(k in low for k in
+                ["backup", ".bcakup", ".bak", " bak", "old", "tmp", "copy", "test", "debug"]):
             reasons.append("backup_or_temp")
         if any(k in low for k in ["-old", "-last-", "123", "0ld"]):
             reasons.append("suspicious_suffix")

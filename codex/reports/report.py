@@ -105,7 +105,7 @@ def write_markdown(results: dict[str, Any], output: Path) -> None:
             match = f.get("match", "")
             link = f"[`{file}:{line}`]({file}#L{line})"
             lines.append(
-                f"- {_badge(sev)} {link} **{rule}** ({f.get('scanner','')}): `{match}`"
+                f"- {_badge(sev)} {link} **{rule}** ({f.get('scanner', '')}): `{match}`"
             )
 
     output.write_text("\n".join(lines) + "\n", encoding="utf-8")

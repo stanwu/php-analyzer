@@ -11,7 +11,9 @@ class SecurityTests(TempDirTestCase):
     def test_detects_sql_injection(self) -> None:
         f = FIXTURES / "sql_injection.php"
         findings = SecurityScanner().scan(f)
-        self.assertTrue(any(x.rule == "sql_injection" and x.severity == "CRITICAL" for x in findings))
+        self.assertTrue(
+            any(x.rule == "sql_injection" and x.severity == "CRITICAL" for x in findings)
+        )
 
     def test_no_false_positive_prepared_statement(self) -> None:
         f = FIXTURES / "clean.php"

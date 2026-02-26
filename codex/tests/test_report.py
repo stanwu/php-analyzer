@@ -12,7 +12,10 @@ class ReportTests(TempDirTestCase):
             "meta": {"root": "/tmp/x"},
             "findings": {
                 "security": [
-                    {"file": "a.php", "line": 1, "rule": "sql_injection", "severity": "CRITICAL", "match": "x"}
+                    {
+                        "file": "a.php", "line": 1, "rule": "sql_injection",
+                        "severity": "CRITICAL", "match": "x",
+                    }
                 ]
             },
             "dependency": {},

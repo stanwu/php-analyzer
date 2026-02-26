@@ -11,7 +11,9 @@ class CredentialTests(TempDirTestCase):
     def test_detects_define_secret(self) -> None:
         f = FIXTURES / "credential_leak.php"
         findings = CredentialScanner().scan(f)
-        self.assertTrue(any(x.rule == "define_secret" and x.severity == "CRITICAL" for x in findings))
+        self.assertTrue(
+            any(x.rule == "define_secret" and x.severity == "CRITICAL" for x in findings)
+        )
 
     def test_detects_db_constructor(self) -> None:
         f = FIXTURES / "credential_leak.php"

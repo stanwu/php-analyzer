@@ -14,7 +14,8 @@ class CredentialScanner(BaseScanner):
             "hardcoded_db_password",
             "CRITICAL",
             re.compile(
-                r"new\s+(?:mysqli|MysqliDb)\s*\(\s*(['\"]).+?\1\s*,\s*(['\"]).+?\2\s*,\s*(['\"]).+?\3",
+                r"new\s+(?:mysqli|MysqliDb)\s*\("
+                r"\s*(['\"]).+?\1\s*,\s*(['\"]).+?\2\s*,\s*(['\"]).+?\3",
                 re.IGNORECASE | re.DOTALL,
             ),
         ),
@@ -22,7 +23,8 @@ class CredentialScanner(BaseScanner):
             "define_secret",
             "CRITICAL",
             re.compile(
-                r"define\s*\(\s*(['\"])(?P<name>[^'\"]*(?:KEY|SECRET|PASSWORD|TOKEN)[^'\"]*)\1\s*,\s*(['\"])(?P<val>[^'\"]+)\3",
+                r"define\s*\(\s*(['\"])(?P<name>[^'\"]*(?:KEY|SECRET|PASSWORD|TOKEN)[^'\"]*)\1"
+                r"\s*,\s*(['\"])(?P<val>[^'\"]+)\3",
                 re.IGNORECASE | re.DOTALL,
             ),
         ),
@@ -30,7 +32,8 @@ class CredentialScanner(BaseScanner):
             "hardcoded_assignment",
             "HIGH",
             re.compile(
-                r"\$(?P<var>[A-Za-z_][A-Za-z0-9_]*(?:key|secret|token|password|passwd|pwd)[A-Za-z0-9_]*)\s*=\s*(['\"])(?P<val>.*?)\2\s*;",
+                r"\$(?P<var>[A-Za-z_][A-Za-z0-9_]*(?:key|secret|token|password|passwd|pwd)"
+                r"[A-Za-z0-9_]*)\s*=\s*(['\"])(?P<val>.*?)\2\s*;",
                 re.IGNORECASE | re.DOTALL,
             ),
         ),
@@ -38,7 +41,8 @@ class CredentialScanner(BaseScanner):
             "base64_encoded_key",
             "HIGH",
             re.compile(
-                r"\$(?P<var>[A-Za-z_][A-Za-z0-9_]*(?:key|secret|token|password|passwd|pwd)[A-Za-z0-9_]*)\s*=\s*(['\"])(?P<val>[A-Za-z0-9+/]{40,}={0,2})\2\s*;",
+                r"\$(?P<var>[A-Za-z_][A-Za-z0-9_]*(?:key|secret|token|password|passwd|pwd)"
+                r"[A-Za-z0-9_]*)\s*=\s*(['\"])(?P<val>[A-Za-z0-9+/]{40,}={0,2})\2\s*;",
                 re.IGNORECASE | re.DOTALL,
             ),
         ),
@@ -63,4 +67,3 @@ class CredentialScanner(BaseScanner):
                     )
                 )
         return findings
-
