@@ -1,4 +1,4 @@
-.PHONY: all install-all test-all test-claude test-codex test-gemini \
+.PHONY: all install-all test test-all test-claude test-codex test-gemini \
         coverage-claude coverage-codex coverage-gemini coverage-all \
         lint-all format-all clean-all
 
@@ -20,6 +20,8 @@ install-gemini:
 	cd gemini && pip install -r requirements.txt
 
 # ── Tests ─────────────────────────────────────────────────────────────────────
+test: test-all
+
 test-all: test-claude test-codex test-gemini
 
 test-claude:
