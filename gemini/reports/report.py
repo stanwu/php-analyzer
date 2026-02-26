@@ -33,15 +33,16 @@ def write_markdown(results: Dict[str, List[Finding]], output_path: Path):
             # Handle dependency analysis results separately
             if scanner == "dependency_analysis":
                 dep_results = findings
-                f.write(f"- **Graph:** {dep_results['nodes']} nodes, {dep_results['edges']} edges\n")
+                f.write(f"- **Graph:** {dep_results['nodes']} nodes, "
+                        f"{dep_results['edges']} edges\n")
                 if dep_results.get("cycles"):
                     f.write(f"- **Cycles Detected:** {len(dep_results['cycles'])}\n")
-                
+
                 if dep_results.get("hubs"):
                     f.write("- **Top 5 Hubs (most included files):**\n")
                     for hub, score in dep_results["hubs"]:
                         f.write(f"  - `{hub}` (score: {score})\n")
-                
+
                 if dep_results.get("orphans"):
                     f.write("- **Orphan Files (not included by any other file):**\n")
                     for orphan in dep_results["orphans"]:
