@@ -1,0 +1,3 @@
+<?php
+// Intentionally empty placeholder
+
