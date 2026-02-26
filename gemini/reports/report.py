@@ -30,6 +30,25 @@ def write_markdown(results: Dict[str, List[Finding]], output_path: Path):
                 continue
             f.write(f"## {scanner.replace('_', ' ').title()} Scanner\n\n")
 
+            # Handle dependency analysis results separately
+            if scanner == "dependency_analysis":
+                dep_results = findings
+                f.write(f"- **Graph:** {dep_results['nodes']} nodes, {dep_results['edges']} edges\n")
+                if dep_results.get("cycles"):
+                    f.write(f"- **Cycles Detected:** {len(dep_results['cycles'])}\n")
+                
+                if dep_results.get("hubs"):
+                    f.write("- **Top 5 Hubs (most included files):**\n")
+                    for hub, score in dep_results["hubs"]:
+                        f.write(f"  - `{hub}` (score: {score})\n")
+                
+                if dep_results.get("orphans"):
+                    f.write("- **Orphan Files (not included by any other file):**\n")
+                    for orphan in dep_results["orphans"]:
+                        f.write(f"  - `{orphan}`\n")
+                f.write("\n")
+                continue
+
             sorted_findings = sorted(findings, key=lambda x: (x.file, x.line))
 
             for finding in sorted_findings:
@@ -53,6 +72,11 @@ def write_json(results: Dict[str, List[Finding]], output_path: Path):
     """Writes the analysis results to a JSON file."""
     serializable_results = {}
     for scanner, findings in results.items():
+        # Handle dependency analysis results separately for JSON
+        if scanner == "dependency_analysis":
+            serializable_results[scanner] = findings
+            continue
+
         serializable_results[scanner] = [
             {
                 "file": str(finding.file),
