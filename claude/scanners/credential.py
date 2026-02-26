@@ -72,7 +72,7 @@ class CredentialScanner(BaseScanner):
             # hardcoded_assignment — only if not already caught by define_secret
             m = _RE_HARDCODED_ASSIGNMENT.search(line)
             if m and not _RE_DEFINE_SECRET.search(line):
-                var_name, value = m.group(1), m.group(2)
+                value = m.group(2)
                 # Skip obvious false positives: empty or whitespace-only values,
                 # or values that are clearly placeholders already flagged elsewhere
                 if value.strip():
