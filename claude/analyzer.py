@@ -3,10 +3,9 @@
 
 import argparse
 import sys
-import time
 from pathlib import Path
 
-from config import iter_custom_php, is_custom_file
+from config import iter_custom_php
 from scanners.base import SEVERITY_ORDER, Finding
 from scanners.credential import CredentialScanner
 from scanners.security import SecurityScanner

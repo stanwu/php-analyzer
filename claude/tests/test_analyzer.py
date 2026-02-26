@@ -1,7 +1,4 @@
 """Tests for the main analyzer CLI (argument parsing and severity filtering)."""
-import json
-import sys
-import tempfile
 from pathlib import Path
 
 import pytest

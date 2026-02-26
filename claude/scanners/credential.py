@@ -6,25 +6,29 @@ from .base import BaseScanner, Finding
 # Match: new mysqli( or new MysqliDb( followed by string literal arguments
 # Captures the entire constructor call line
 _RE_DB_CONSTRUCTOR = re.compile(
-    r"""new\s+(?:mysqli|MysqliDb)\s*\(\s*['"][^'"]+['"]\s*,\s*['"][^'"]*['"]\s*,\s*['"]([^'"]+)['"]""",
+    r"""new\s+(?:mysqli|MysqliDb)\s*\("""
+    r"""\s*['"][^'"]+['"]\s*,\s*['"][^'"]*['"]\s*,\s*['"]([^'"]+)['"]""",
     re.IGNORECASE,
 )
 
 # Match: define('SOMETHING_KEY'/'SECRET'/'PASSWORD'/'TOKEN', 'value')
 _RE_DEFINE_SECRET = re.compile(
-    r"""define\s*\(\s*['"]([^'"]*(?:KEY|SECRET|PASSWORD|TOKEN|PASS|API)[^'"]*)['"]\s*,\s*['"]([^'"]{3,})['"]""",
+    r"""define\s*\(\s*['"]([^'"]*(?:KEY|SECRET|PASSWORD|TOKEN|PASS|API)[^'"]*)['"]\s*"""
+    r""",\s*['"]([^'"]{3,})['"]""",
     re.IGNORECASE,
 )
 
 # Match: $var_name_with_key_secret_token_password = 'literal'
 _RE_HARDCODED_ASSIGNMENT = re.compile(
-    r"""\$(\w*(?:key|secret|token|password|pass|api_key|apikey|auth)\w*)\s*=\s*['"]([^'"]{4,})['"]""",
+    r"""\$(\w*(?:key|secret|token|password|pass|api_key|apikey|auth)\w*)"""
+    r"""\s*=\s*['"]([^'"]{4,})['"]""",
     re.IGNORECASE,
 )
 
 # Match base64 strings longer than 40 chars assigned to credential-like variables
 _RE_BASE64_KEY = re.compile(
-    r"""\$(\w*(?:key|secret|token|password|pass|auth)\w*)\s*=\s*['"]([A-Za-z0-9+/]{40,}={0,2})['"]""",
+    r"""\$(\w*(?:key|secret|token|password|pass|auth)\w*)"""
+    r"""\s*=\s*['"]([A-Za-z0-9+/]{40,}={0,2})['"]""",
     re.IGNORECASE,
 )
 
@@ -85,7 +89,6 @@ class CredentialScanner(BaseScanner):
             # base64_encoded_key
             m = _RE_BASE64_KEY.search(line)
             if m:
-                var_name, b64_value = m.group(1), m.group(2)
                 # Avoid duplicate with hardcoded_assignment
                 already_reported = any(
                     f.line == lineno and f.rule == "hardcoded_assignment" for f in findings

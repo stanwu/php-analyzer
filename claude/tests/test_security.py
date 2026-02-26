@@ -1,5 +1,4 @@
 """Tests for the security scanner."""
-import pytest
 from pathlib import Path
 
 from scanners.security import SecurityScanner

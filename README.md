@@ -1,14 +1,18 @@
 # php-analyzer
 
+[![CI](https://github.com/stanwu/php-analyzer/actions/workflows/ci.yml/badge.svg)](https://github.com/stanwu/php-analyzer/actions/workflows/ci.yml)
+
 A Python CLI tool for **static security analysis of PHP web projects**, implemented independently by three AI assistants (Claude, Codex, Gemini) for comparison. Handles large codebases (~15,000+ PHP files) by filtering out vendor directories before analysis.
 
 ## Project Structure
 
 ```
 php-analyzer/
-├── claude/     # Implementation by Claude (Anthropic)
-├── codex/      # Implementation by Codex (OpenAI) — stdlib only, no runtime deps
-└── gemini/     # Implementation by Gemini (Google)
+├── .github/workflows/ci.yml   # GitHub Actions CI (test + lint)
+├── .githooks/pre-commit        # Security pre-commit hook
+├── claude/                     # Implementation by Claude (Anthropic)
+├── codex/                      # Implementation by Codex (OpenAI) — stdlib only
+└── gemini/                     # Implementation by Gemini (Google)
 ```
 
 Each subdirectory is a standalone, runnable tool with identical CLI interface and four scanners.
@@ -168,32 +172,56 @@ python analyzer.py /path/to/php_project --no-color
 
 ## Development
 
-All commands below work from a subdirectory (`cd claude`, `cd codex`, `cd gemini`). Use the root `Makefile` to operate on all three at once.
+### Pre-commit Security Hook
+
+A security hook runs automatically before every `git commit`. Install it once:
 
 ```bash
+make install-hooks
+```
+
+The hook scans **staged files only** and blocks the commit if it finds:
+
+| Check | Scope | Blocked patterns |
+|-------|-------|-----------------|
+| Credential scan | `.py` / `.php` / `.env` | Stripe live keys, AWS access keys, GitHub PATs, private keys, hardcoded passwords |
+| Flake8 lint | `.py` | Style errors, unused imports, undefined names (`--max-line-length=100`) |
+
+Files containing `FAKE`, `PLACEHOLDER`, `EXAMPLE`, or similar markers are automatically allow-listed.
+
+### CI / CD
+
+Every push and pull request to `main` triggers GitHub Actions:
+
+| Job | Description |
+|-----|-------------|
+| `test (claude)` | Install deps → pytest with coverage → upload `coverage.xml` |
+| `test (codex)` | Install deps → pytest with coverage → upload `coverage.xml` |
+| `test (gemini)` | Install deps → pytest with coverage → upload `coverage.xml` |
+| `lint` | flake8 across all three implementations |
+
+### Makefile Reference
+
+All commands work from a subdirectory (`cd claude`, `cd codex`, `cd gemini`). Use the root `Makefile` to operate on all three at once.
+
+```bash
+# Install git hooks (run once after cloning)
+make install-hooks
+
 # Run tests
 make test
 
 # Run tests with coverage
-make test-coverage
+make coverage-all
 
-# Lint
-make lint
+# Lint all implementations
+make lint-all
 
-# Format
-make format
+# Format all implementations
+make format-all
 
 # Clean build artifacts
-make clean
-```
-
-Or from the project root:
-
-```bash
-make test-all        # test all three implementations
-make install-all     # install all dependencies
-make lint-all        # lint all implementations
-make clean-all       # remove all caches and artifacts
+make clean-all
 ```
 
 ---

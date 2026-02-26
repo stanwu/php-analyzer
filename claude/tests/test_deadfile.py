@@ -1,5 +1,4 @@
 """Tests for the dead file scanner."""
-import pytest
 import tempfile
 from pathlib import Path
 
@@ -18,7 +17,7 @@ def test_flags_backup_filename():
         f = _make_file(Path(tmpdir), "device.backup.php")
         scanner = DeadFileScanner()
         findings = scanner.scan(f)
-        assert len(findings) >= 1, f"Expected 'device.backup.php' to be flagged"
+        assert len(findings) >= 1, "Expected 'device.backup.php' to be flagged"
         assert findings[0].rule == "dead_file"
 
 
@@ -28,7 +27,7 @@ def test_flags_bcakup_typo():
         f = _make_file(Path(tmpdir), "device.bcakup.php")
         scanner = DeadFileScanner()
         findings = scanner.scan(f)
-        assert len(findings) >= 1, f"Expected 'device.bcakup.php' to be flagged"
+        assert len(findings) >= 1, "Expected 'device.bcakup.php' to be flagged"
 
 
 def test_flags_old_suffix():
@@ -37,7 +36,7 @@ def test_flags_old_suffix():
         f = _make_file(Path(tmpdir), "device-0ld.php")
         scanner = DeadFileScanner()
         findings = scanner.scan(f)
-        assert len(findings) >= 1, f"Expected 'device-0ld.php' to be flagged"
+        assert len(findings) >= 1, "Expected 'device-0ld.php' to be flagged"
 
 
 def test_flags_demo_pattern():
@@ -47,7 +46,7 @@ def test_flags_demo_pattern():
         scanner = DeadFileScanner()
         findings = scanner.scan(f)
         assert len(findings) >= 1, (
-            f"Expected 'demo-abc123xyz99-get-key.php' to be flagged as demo pattern"
+            "Expected 'demo-abc123xyz99-get-key.php' to be flagged as demo pattern"
         )
 
 

@@ -45,7 +45,6 @@ def _is_dead_file(path: Path) -> tuple[bool, str]:
     Returns (is_dead, reason).
     """
     name = path.name.lower()
-    stem = path.stem.lower()
 
     # Exact matches for known dangerous files
     if name in _DANGEROUS_EXACT:

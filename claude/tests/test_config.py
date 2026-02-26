@@ -1,8 +1,5 @@
 """Tests for the config module (vendor filtering logic)."""
-import tempfile
 from pathlib import Path
-
-import pytest
 
 from config import ROOT_VENDOR_DIRS, is_custom_file, iter_custom_php
 

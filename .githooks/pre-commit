@@ -109,7 +109,9 @@ if [ -n "$STAGED_PY" ]; then
     done <<< "$STAGED_PY"
 
     if [ ${#LINT_FILES[@]} -gt 0 ]; then
-        if python3 -m flake8 \
+        if ! python3 -m flake8 --version >/dev/null 2>&1; then
+            echo -e "${YELLOW}  →${RESET} flake8 not installed — skipping lint (run: pip install flake8)"
+        elif python3 -m flake8 \
             --max-line-length=100 \
             --extend-ignore=E501,W503 \
             "${LINT_FILES[@]}" 2>&1 | \

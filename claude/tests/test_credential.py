@@ -1,5 +1,4 @@
 """Tests for the credential scanner."""
-import pytest
 from pathlib import Path
 
 from scanners.credential import CredentialScanner

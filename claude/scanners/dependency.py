@@ -14,7 +14,8 @@ _RE_INCLUDE = re.compile(
 
 # Also catch dirname(__FILE__) / __DIR__ based paths — extract what we can
 _RE_INCLUDE_DIR = re.compile(
-    r"""\b(?:require|require_once|include|include_once)\s*\(?\s*(?:dirname\s*\(\s*__FILE__\s*\)|__DIR__)\s*\.\s*['"]([^'"]+)['"]""",
+    r"""\b(?:require|require_once|include|include_once)\s*\(?\s*"""
+    r"""(?:dirname\s*\(\s*__FILE__\s*\)|__DIR__)\s*\.\s*['"]([^'"]+)['"]""",
     re.IGNORECASE,
 )
 

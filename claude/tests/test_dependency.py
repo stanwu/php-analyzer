@@ -1,5 +1,4 @@
 """Tests for the dependency scanner."""
-import pytest
 import tempfile
 from pathlib import Path
 
@@ -17,7 +16,7 @@ def test_graph_builds_correctly():
     with tempfile.TemporaryDirectory() as tmpdir:
         root = Path(tmpdir)
         file_b = _write_php(root, "b.php", "<?php\n// library file\n")
-        file_a = _write_php(root, "a.php", f'<?php\nrequire_once "b.php";\n')
+        file_a = _write_php(root, "a.php", '<?php\nrequire_once "b.php";\n')
 
         files = [file_a, file_b]
         G = build_graph(files, root)
@@ -37,7 +36,7 @@ def test_find_hubs_returns_sorted():
         hub = _write_php(root, "hub.php", "<?php // shared library\n")
         files = [hub]
         for i in range(5):
-            f = _write_php(root, f"consumer_{i}.php", f'<?php\nrequire "hub.php";\n')
+            f = _write_php(root, f"consumer_{i}.php", '<?php\nrequire "hub.php";\n')
             files.append(f)
         # One file included by only 1 other
         minor = _write_php(root, "minor.php", "<?php // minor\n")
@@ -69,7 +68,7 @@ def test_detect_cycles():
         cycles = detect_cycles(G)
 
         assert len(cycles) >= 1, (
-            f"Expected at least 1 cycle between cycle_a.php and cycle_b.php, found none"
+            "Expected at least 1 cycle between cycle_a.php and cycle_b.php, found none"
         )
 
 
