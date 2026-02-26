@@ -1,4 +1,4 @@
-.PHONY: all install-all test test-all test-claude test-codex test-gemini \
+.PHONY: all install-all install-hooks test test-all test-claude test-codex test-gemini \
         coverage-claude coverage-codex coverage-gemini coverage-all \
         lint-all format-all clean-all
 
@@ -9,6 +9,12 @@ all: test-all
 
 # ── Installation ──────────────────────────────────────────────────────────────
 install-all: install-claude install-codex install-gemini
+
+install-hooks:
+	@echo "==> Installing git pre-commit hook..."
+	@chmod +x .githooks/pre-commit
+	@ln -sf ../../.githooks/pre-commit .git/hooks/pre-commit
+	@echo "    Hook installed: .git/hooks/pre-commit -> .githooks/pre-commit"
 
 install-claude:
 	cd claude && pip install -r requirements.txt
