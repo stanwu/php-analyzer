@@ -38,7 +38,8 @@ def main(args):
 
     excluded_count = len(all_php_files) - len(custom_php_files)
     print_summary(
-        f"[*] Found {len(custom_php_files)} custom PHP files (excluded {excluded_count} vendor files)",
+        f"[*] Found {len(custom_php_files)} custom PHP files "
+        f"(excluded {excluded_count} vendor files)",
         Colors.BLUE,
     )
 
@@ -88,7 +89,8 @@ def main(args):
             "cycles": cycles,
         }
         print_summary(
-            f"[*] Running dependency scanner... done (graph: {graph.number_of_nodes()} nodes, {graph.number_of_edges()} edges)",
+            f"[*] Running dependency scanner... done "
+            f"(graph: {graph.number_of_nodes()} nodes, {graph.number_of_edges()} edges)",
             Colors.GREEN,
         )
 

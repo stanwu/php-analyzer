@@ -1,7 +1,5 @@
 from pathlib import Path
 import pytest
-import networkx as nx
-
 from scanners.dependency import DependencyScanner
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"

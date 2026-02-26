@@ -33,13 +33,13 @@ def write_markdown(results: Dict[str, List[Finding]], output_path: Path):
             sorted_findings = sorted(findings, key=lambda x: (x.file, x.line))
 
             for finding in sorted_findings:
-                severity_badge = f"![{finding.severity}](https://img.shields.io/badge/severity-{finding.severity}-red)"
-                if finding.severity == "HIGH":
-                    severity_badge = f"![{finding.severity}](https://img.shields.io/badge/severity-{finding.severity}-orange)"
-                elif finding.severity == "MEDIUM":
-                    severity_badge = f"![{finding.severity}](https://img.shields.io/badge/severity-{finding.severity}-yellow)"
-                elif finding.severity in ["LOW", "INFO"]:
-                    severity_badge = f"![{finding.severity}](https://img.shields.io/badge/severity-{finding.severity}-blue)"
+                sev = finding.severity
+                color = {"HIGH": "orange", "MEDIUM": "yellow", "LOW": "blue", "INFO": "blue"}.get(
+                    sev, "red"
+                )
+                severity_badge = (
+                    f"![{sev}](https://img.shields.io/badge/severity-{sev}-{color})"
+                )
 
                 f.write(f"### `{finding.rule}`\n\n")
                 f.write(f"- **Severity:** {finding.severity} {severity_badge}\n")

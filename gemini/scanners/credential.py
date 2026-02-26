@@ -10,7 +10,8 @@ from scanners.base import BaseScanner
 CREDENTIAL_PATTERNS = {
     "hardcoded_db_password": {
         "pattern": re.compile(
-            r"""(?:new\s+mysqli|new\s+MysqliDb)\s*\(\s*['"].*?['"],\s*['"].*?['"],\s*['"](.+?)['"]\)""",
+            r"""(?:new\s+mysqli|new\s+MysqliDb)\s*\("""
+            r"""\s*['"].*?['"],\s*['"].*?['"],\s*['"](.+?)['"]\)""",
             re.IGNORECASE,
         ),
         "severity": "CRITICAL",
@@ -24,7 +25,8 @@ CREDENTIAL_PATTERNS = {
     },
     "hardcoded_assignment": {
         "pattern": re.compile(
-            r"""\$(?:[a-zA-Z0-9_]*)(?:KEY|SECRET|TOKEN|PASSWORD)(?:[a-zA-Z0-9_]*)\s*=\s*['"](.{4,})['"]""",
+            r"""\$(?:[a-zA-Z0-9_]*)(?:KEY|SECRET|TOKEN|PASSWORD)(?:[a-zA-Z0-9_]*)"""
+            r"""\s*=\s*['"](.{4,})['"]""",
             re.IGNORECASE,
         ),
         "severity": "HIGH",
