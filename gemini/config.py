@@ -14,6 +14,7 @@ ROOT_VENDOR_DIRS = {
 
 Severity = Literal["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"]
 
+
 @dataclass(frozen=True)
 class Finding:
     file: Path
@@ -21,6 +22,7 @@ class Finding:
     rule: str
     severity: Severity
     match: str
+
 
 def is_custom_file(path: Path, root: Path) -> bool:
     """Return True only if the file is NOT inside a vendor directory."""
@@ -31,6 +33,7 @@ def is_custom_file(path: Path, root: Path) -> bool:
     except ValueError:
         # If the path is not within the root, it's not a custom file
         return False
+
 
 def iter_custom_php(root: Path) -> Iterable[Path]:
     """Yield all custom PHP file Paths under root."""

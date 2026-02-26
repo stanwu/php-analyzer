@@ -19,27 +19,19 @@ SECURITY_PATTERNS = {
         "severity": "HIGH",
     },
     "xss_direct_echo": {
-        "pattern": re.compile(
-            r"echo\s+\$_(?:GET|POST|REQUEST|COOKIE)\s*\[", re.IGNORECASE
-        ),
+        "pattern": re.compile(r"echo\s+\$_(?:GET|POST|REQUEST|COOKIE)\s*\[", re.IGNORECASE),
         "severity": "HIGH",
     },
     "dynamic_include": {
-        "pattern": re.compile(
-            r"(?:include|require)(?:_once)?\s*\(?\$", re.IGNORECASE
-        ),
+        "pattern": re.compile(r"(?:include|require)(?:_once)?\s*\(?\$", re.IGNORECASE),
         "severity": "HIGH",
     },
     "shell_exec": {
-        "pattern": re.compile(
-            r"(?:shell_exec|exec|system|passthru)\s*\(", re.IGNORECASE
-        ),
+        "pattern": re.compile(r"(?:shell_exec|exec|system|passthru)\s*\(", re.IGNORECASE),
         "severity": "CRITICAL",
     },
     "open_redirect": {
-        "pattern": re.compile(
-            r"header\s*\(\s*['\"]Location:\s*['\"]\s*\.\s*\$_", re.IGNORECASE
-        ),
+        "pattern": re.compile(r"header\s*\(\s*['\"]Location:\s*['\"]\s*\.\s*\$_", re.IGNORECASE),
         "severity": "MEDIUM",
     },
 }

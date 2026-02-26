@@ -4,6 +4,7 @@ from typing import List
 
 from config import Finding
 
+
 class BaseScanner(ABC):
     """Abstract base class for all scanners."""
 

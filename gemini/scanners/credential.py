@@ -10,28 +10,28 @@ from scanners.base import BaseScanner
 CREDENTIAL_PATTERNS = {
     "hardcoded_db_password": {
         "pattern": re.compile(
-            r'''(?:new\s+mysqli|new\s+MysqliDb)\s*\(\s*['"].*?['"],\s*['"].*?['"],\s*['"](.+?)['"]\)''',
+            r"""(?:new\s+mysqli|new\s+MysqliDb)\s*\(\s*['"].*?['"],\s*['"].*?['"],\s*['"](.+?)['"]\)""",
             re.IGNORECASE,
         ),
         "severity": "CRITICAL",
     },
     "define_secret": {
         "pattern": re.compile(
-            r'''define\s*\(\s*['"].*(?:KEY|SECRET|PASSWORD|TOKEN).*['"],\s*['"](.+?)['"]\s*\)''',
+            r"""define\s*\(\s*['"].*(?:KEY|SECRET|PASSWORD|TOKEN).*['"],\s*['"](.+?)['"]\s*\)""",
             re.IGNORECASE,
         ),
         "severity": "CRITICAL",
     },
     "hardcoded_assignment": {
         "pattern": re.compile(
-            r'''\$(?:[a-zA-Z0-9_]*)(?:KEY|SECRET|TOKEN|PASSWORD)(?:[a-zA-Z0-9_]*)\s*=\s*['"](.{4,})['"]''',
+            r"""\$(?:[a-zA-Z0-9_]*)(?:KEY|SECRET|TOKEN|PASSWORD)(?:[a-zA-Z0-9_]*)\s*=\s*['"](.{4,})['"]""",
             re.IGNORECASE,
         ),
         "severity": "HIGH",
     },
     "base64_encoded_key": {
         "pattern": re.compile(
-            r'''['"]([a-zA-Z0-9+/=]{40,})['"]''',
+            r"""['"]([a-zA-Z0-9+/=]{40,})['"]""",
             re.IGNORECASE,
         ),
         "severity": "HIGH",

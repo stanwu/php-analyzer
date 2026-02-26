@@ -34,7 +34,7 @@ class DependencyScanner(BaseScanner):
                     target_file = match.group(1)
                     # Resolve target path relative to the current file's directory
                     target_path = (file_path.parent / target_file).resolve()
-                    
+
                     try:
                         # Normalize and find the relative path from the project root
                         target_node = str(target_path.relative_to(root))
@@ -55,13 +55,12 @@ class DependencyScanner(BaseScanner):
 
     def find_orphans(self, graph: nx.DiGraph, all_files: List[Path], root: Path) -> List[str]:
         """Finds files that are not included by any other file."""
-        all_nodes = {str(f.relative_to(root)) for f in all_files}
-        included_nodes = {node for edge in graph.edges for node in edge}
         # A better definition of orphan: has no incoming edges.
         # We must also exclude common entrypoints like index.php
-        orphans = [node for node, degree in graph.in_degree if degree == 0 and 'index.php' not in node]
+        orphans = [
+            node for node, degree in graph.in_degree if degree == 0 and "index.php" not in node
+        ]
         return orphans
-
 
     def detect_cycles(self, graph: nx.DiGraph) -> List[List[str]]:
         """Detects circular dependencies."""

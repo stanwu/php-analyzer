@@ -4,6 +4,7 @@ from typing import Dict, List
 
 from config import Finding
 
+
 def write_markdown(results: Dict[str, List[Finding]], output_path: Path):
     """Writes the analysis results to a Markdown file."""
     with open(output_path, "w", encoding="utf-8") as f:
@@ -28,7 +29,7 @@ def write_markdown(results: Dict[str, List[Finding]], output_path: Path):
             if not findings:
                 continue
             f.write(f"## {scanner.replace('_', ' ').title()} Scanner\n\n")
-            
+
             sorted_findings = sorted(findings, key=lambda x: (x.file, x.line))
 
             for finding in sorted_findings:
@@ -46,6 +47,7 @@ def write_markdown(results: Dict[str, List[Finding]], output_path: Path):
                 if finding.line > 0:
                     f.write(f"- **Line:** {finding.line}\n")
                 f.write(f"- **Match:**\n```php\n{finding.match}\n```\n\n")
+
 
 def write_json(results: Dict[str, List[Finding]], output_path: Path):
     """Writes the analysis results to a JSON file."""
