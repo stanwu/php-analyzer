@@ -1,13 +1,13 @@
-# php-analyzer
+# PHP Security Analysis
 
-[![CI](https://github.com/stanwu/php-analyzer/actions/workflows/ci.yml/badge.svg)](https://github.com/stanwu/php-analyzer/actions/workflows/ci.yml)
+[![CI](https://github.com/stanwu/php-security-analysis/actions/workflows/ci.yml/badge.svg)](https://github.com/stanwu/php-security-analysis/actions/workflows/ci.yml)
 
 A Python CLI tool for **static security analysis of PHP web projects**, implemented independently by three AI assistants (Claude, Codex, Gemini) for comparison. Handles large codebases (~15,000+ PHP files) by filtering out vendor directories before analysis.
 
 ## Project Structure
 
 ```
-php-analyzer/
+php-security-analysis/
 ├── .github/workflows/ci.yml   # GitHub Actions CI (test + lint)
 ├── .githooks/pre-commit        # Security pre-commit hook
 ├── claude/                     # Implementation by Claude (Anthropic)
